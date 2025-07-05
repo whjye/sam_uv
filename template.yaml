@@ -20,7 +20,7 @@ Resources:
   WeatherFn:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: lambda/weather/
+      CodeUri: lambda/weather
       Handler: app.lambda_handler
     Metadata:
       BuildMethod: makefile
@@ -28,7 +28,7 @@ Resources:
   GeolocatorFn:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: lambda/geolocator/
+      CodeUri: lambda/geolocator
       Handler: app.lambda_handler
     Metadata:
       BuildMethod: makefile
