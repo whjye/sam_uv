@@ -10,7 +10,7 @@ Globals:
     Timeout: 5
     Runtime: python3.12
     Layers:
-      - arn:aws:lambda:ap-southeast-2:017000801446:layer:AWSLambdaPowertoolsPythonV3-python312-x86_64:18
+      - !Sub arn:aws:lambda:${AWS::Region}:017000801446:layer:AWSLambdaPowertoolsPythonV3-python312-x86_64:18
       - !Ref CommonLayer
       - !Ref ModelsLayer
     LoggingConfig:
