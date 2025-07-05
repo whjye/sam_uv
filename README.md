@@ -1,10 +1,42 @@
-# SAM with uv
+# AWS SAM with uv
 
-Example repo setup for a SAM application with uv.
+Example repo setup for an AWS SAM application with uv.
 
-The repo contains two Lambda Functions with seperate dependency requirements, a common Lambda Layer for dependencies and another Lambda Layer for shared code (event models). 
+The app deploys:
 
-Additionally, AWS Lambda Powertools as a Layer is used when deployed, and accessible as a dev dependency locally.
+  - two Lambda Functions with seperate dependency requirements
+  - two Lambda Layers; one for shared dependencies and one for shared code (event models). 
+
+Local Dev inclusions:
+
+  - AWS Lambda Powertools as a [Layer](https://docs.powertools.aws.dev/lambda/python/latest/#lambda-layer) is used when deployed, and accessible as a dev dependency locally (`uv add --dev 'aws-lambda-powertools[all]`)
+  - `boto3` - bundled in AWS Lambda runtime
+
+## Local Setup
+
+### Unit Tests with Pytest
+`uv run pytest tests -v` will automatically set up your virtual environment and run the tests.
+
+Alternatively you can activate the virtual environment directly:
+```sh
+uv venv
+source .venv/bin/activate
+```
+
+### `sam local`
+
+Example for `sam local start-lambda`:
+1. `sam build`
+2. `sam local start-lambda`
+3. Invoke local Lambda - for example:
+
+  ```sh
+  aws lambda invoke \
+    --function-name "GeolocatorFn" \
+    --endpoint-url "http://127.0.0.1:3001" \
+    --payload fileb://tests/unit/events/geolocator.json \
+    --no-verify-ssl out.json
+  ```
 
 ## Adding a Lambda Function or Layer
 
@@ -33,7 +65,7 @@ Additionally, AWS Lambda Powertools as a Layer is used when deployed, and access
         cp *.py "$(ARTIFACTS_DIR)" # remove this line for Layers
     ```
 
-5. Specify `template.yaml` to use the Makefile for `sam build`:
+5. When adding the Lambda to the stack, specify in the `template.yaml` to use the Makefile for `sam build`:
 
     ```yaml
     Resources:
