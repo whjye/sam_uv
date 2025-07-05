@@ -9,7 +9,7 @@ The app deploys:
 
 Local Dev inclusions:
 
-  - AWS Lambda Powertools as a [Layer](https://docs.powertools.aws.dev/lambda/python/latest/#lambda-layer) is used when deployed, and accessible as a dev dependency locally (`uv add --dev 'aws-lambda-powertools[all]`)
+  - AWS Lambda Powertools as a [Layer](https://docs.powertools.aws.dev/lambda/python/latest/#lambda-layer) is used when deployed, and accessible as a dev dependency locally (`uv add --dev 'aws-lambda-powertools[all]'`)
   - `boto3` - bundled in AWS Lambda runtime
 
 ## Local Setup
