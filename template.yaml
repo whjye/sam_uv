@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SAM with uv
+
+Globals:
+  Function:
+    Architectures:
+      - x86_64
+    Timeout: 5
+    Runtime: python3.12
+    Layers:
+      - arn:aws:lambda:ap-southeast-2:017000801446:layer:AWSLambdaPowertoolsPythonV3-python312-x86_64:18
+      - !Ref CommonLayer
+      - !Ref ModelsLayer
+    LoggingConfig:
+      LogFormat: JSON
+
+Resources:
+  WeatherFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/weather/
+      Handler: app.lambda_handler
+    Metadata:
+      BuildMethod: makefile
+
+  GeolocatorFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/geolocator/
+      Handler: app.lambda_handler
+    Metadata:
+      BuildMethod: makefile
+
+  CommonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: layers/common
+      CompatibleRuntimes:
+        - python3.12
+    Metadata:
+      BuildMethod: makefile
+
+  ModelsLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: layers/models
+      CompatibleRuntimes:
+        - python3.12
+    Metadata:
+      BuildMethod: makefile
+
+
+Outputs:
+  WeatherFn:
+    Description: Weather Function ARN
+    Value: !GetAtt WeatherFn.Arn
+
+  GeolocatorFn:
+    Description: Geolocator Function ARN
+    Value: !GetAtt GeolocatorFn.Arn
+
+  CommonLayer:
+    Description: Common Layer ARN
+    Value: !Ref CommonLayer
+
+  ModelsLayer:
+    Description: Models Layer ARN
+    Value: !Ref ModelsLayer
