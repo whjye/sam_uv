@@ -1,10 +1,9 @@
 [project]
 name = "weather"
 version = "0.1.0"
-description = "Add your description here"
+description = "Weather history data Lambda function"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    # "pendulum>=3.1.0",
     "meteostat>=1.7.1",
 ]
