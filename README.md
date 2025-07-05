@@ -10,10 +10,12 @@ Additionally, AWS Lambda Powertools as a Layer is used when deployed, and access
 
 1. Create a new uv project:
   - Function - `uv init lambda/new_fn`
-  - Layer - `uv init --lib layers/new_layer`
+  - Layer
+      - `uv init --lib layers/new_layer` if you need to build shared code
+      - `uv init layers/new_layer` if you only want to bundle package dependencies in a Layer
 2. Add Function or Layer specific dependencies to the Function/Layer with `uv add --project lambda/new_fn <package>`
-3. Add it as a workspace member `uv add lambda/new_fn` or `uv add layers/new_layer`
-4. Add a Makefile to `uv` for builds under `lambda/new_fn/Makefile`or `layers/new_layer/Makefile`:
+3. Add it as a workspace member with `uv add lambda/new_fn` or `uv add layers/new_layer`
+4. Add a Makefile to build dependencies with `uv` for builds under `lambda/new_fn/Makefile`or `layers/new_layer/Makefile`:
 
     ```Makefile
     .PHONY: build-%
@@ -28,7 +30,7 @@ Additionally, AWS Lambda Powertools as a Layer is used when deployed, and access
             --python 3.12 \
             --target $(ARTIFACTS_DIR) \
             -r $(ARTIFACTS_DIR)/requirements.txt
-        cp *.py "$(ARTIFACTS_DIR)" # remove this layer for layers
+        cp *.py "$(ARTIFACTS_DIR)" # remove this line for Layers
     ```
 
 5. Specify `template.yaml` to use the Makefile for `sam build`:
@@ -53,7 +55,7 @@ Additionally, AWS Lambda Powertools as a Layer is used when deployed, and access
           BuildMethod: makefile
     ```
 
-6. `sam build` or `sam sync` with builds or syncs via uv ⚡
+6. `sam build` for builds or `sam sync` for syncs via uv ⚡
 
 ## SAM Build with Docker
 
